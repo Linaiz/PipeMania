@@ -4,35 +4,43 @@ import WebFontFile from '../utils/WebFontFile'
 export default class TitleScreen extends Phaser.Scene {
 
     preload() {
-        this.load.image('startButton', '/assets/ui/button.png');
+        // Special font for the title text is retrieved from GoogleFonts with WebFontLoader
         const font = new WebFontFile(this.load, 'Jersey 25 Charted');
         this.load.addFile(font)
+
+        this.load.image('startButton', '/assets/ui/button.png');
     }
 
     create() {
         this.cameras.main.setBackgroundColor('#84d79e')
-        
+        this.createTitle()
+        this.createStartButton()
+    }
+
+    createTitle() {
         const titleText = this.add.text(this.scale.width / 2, this.scale.height / 3, 'Pipe Mania', {
             fontSize: '142px',
             color: '#ff854c',
             fontFamily: '"Jersey 25 Charted"',
-          }).setShadow(5, 6, '#c8ff94');
-          titleText.setOrigin(0.5);
+        }).setShadow(5, 6, '#c8ff94');
 
+        titleText.setOrigin(0.5);
+    }
 
+    createStartButton() {
+        // Start button will start the game scene once pressed
         const startButton = this.add.image(this.scale.width / 2, this.scale.height / 1.8, 'startButton').setInteractive();
 
-        // Start the game when the button is clicked
         startButton.on('pointerdown', () => {
-        this.scene.start('game');
+            this.scene.start('game');
         });
 
-        // Add hover effect for button (optional)
+        // Hover effect for button
         startButton.on('pointerover', () => {
-        startButton.setScale(1.1); // Increase scale when hovered over
+        startButton.setScale(1.1);
         });
         startButton.on('pointerout', () => {
-        startButton.setScale(1); // Reset scale when not hovered
+        startButton.setScale(1); 
         });
     }
 
