@@ -1,20 +1,22 @@
 import Phaser from 'phaser'
+import WebFontFile from '../utils/WebFontFile'
 
 export default class TitleScreen extends Phaser.Scene {
 
     preload() {
-        this.load.image('startButton', '../../public/assets/ui/button.png');
-
+        this.load.image('startButton', '/assets/ui/button.png');
+        const font = new WebFontFile(this.load, 'Jersey 25 Charted');
+        this.load.addFile(font)
     }
 
     create() {
         this.cameras.main.setBackgroundColor('#84d79e')
         
         const titleText = this.add.text(this.scale.width / 2, this.scale.height / 3, 'Pipe Mania', {
-            fontSize: '48px',
-            color: '#ffffff',
-            fontFamily: 'Arial',
-          });
+            fontSize: '142px',
+            color: '#ff854c',
+            fontFamily: '"Jersey 25 Charted"',
+          }).setShadow(5, 6, '#c8ff94');
           titleText.setOrigin(0.5);
 
 
@@ -33,4 +35,6 @@ export default class TitleScreen extends Phaser.Scene {
         startButton.setScale(1); // Reset scale when not hovered
         });
     }
+
+    
 }
