@@ -1,24 +1,9 @@
-
 export default class Grid {
 
     constructor(rows, columns) {
       this.rows = rows;
       this.columns = columns;
-      this.grid = this.createGrid();
-    }
-
-    createGrid() {
-        const grid = [];
-
-        for (let row = 0; row < this.rows; row++) {
-            grid[row] = [];
-
-            for (let col = 0; col < this.columns; col++) {
-                grid[row][col] = null;
-            }
-        }
-
-        return grid;
+      this.grid = Array.from({ length: columns }, () => Array(rows).fill(-1));
     }
 
     getCell(row, col) {
