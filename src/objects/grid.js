@@ -11,11 +11,11 @@ export default class Grid {
         const grid = [];
 
         for (let row = 0; row < this.rows; row++) {
-          grid[row] = [];
+            grid[row] = [];
 
-          for (let col = 0; col < this.columns; col++) {
-            grid[row][col] = null;
-          }
+            for (let col = 0; col < this.columns; col++) {
+                grid[row][col] = null;
+            }
         }
 
         return grid;
