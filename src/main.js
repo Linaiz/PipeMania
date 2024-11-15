@@ -1,11 +1,11 @@
 import Phaser from 'phaser'
 
-import TitleScreen from './scenes/TitleScreen'
-import Game from './scenes/Game'
+import TitleScreen from './scenes/title-screen'
+import Game from './scenes/game'
 
 const config = {
-    width: 800,
-    height: 900,
+    width: 1100,
+    height: 800,
     type: Phaser.AUTO
 }
 
