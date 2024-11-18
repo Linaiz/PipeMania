@@ -16,6 +16,13 @@ export default class Game extends Phaser.Scene {
     }
 
     create() {
+        const gridSettings = {
+            offsetX: 64,
+            offsetY: 64,
+        }
+        
+        this.scene.launch("Grid", gridSettings);
+        // launch queue scene
         this.scene.launch("Ui");
         //this.grid = new Grid(7, 9);
         // Define grid dimensions and tile size

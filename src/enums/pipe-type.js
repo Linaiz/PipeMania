@@ -1,9 +1,9 @@
 class PipeType {
-    static #_STRAIGHT = 0;
-    static #_CURVED = 1;
-    static #_CROSS = 2;
+    static #STRAIGHT = 0;
+    static #CURVED = 1;
+    static #CROSS = 2;
 
-    static get STRAIGHT() { return this.#_STRAIGHT; }
-    static get CURVED() { return this.#_CURVED; }
-    static get CROSS() { return this.#_CROSS; }
+    static get STRAIGHT() { return this.#STRAIGHT; }
+    static get CURVED() { return this.#CURVED; }
+    static get CROSS() { return this.#CROSS; }
 }
