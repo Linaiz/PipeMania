@@ -2,6 +2,10 @@ import Phaser from 'phaser'
 
 export default class Game extends Phaser.Scene {
 
+    constructor() {
+        super({ key: 'Game'});
+    }
+
     preload() {
         // this.load.image('pipeStraight', '/assets/pipes/straight.png');
         // this.load.image('pipeCurved', '/assets/pipes/curved.png');
@@ -12,6 +16,7 @@ export default class Game extends Phaser.Scene {
     }
 
     create() {
+        this.scene.launch("Ui");
         //this.grid = new Grid(7, 9);
         // Define grid dimensions and tile size
         // this.gridSize = 96; // Size of each tile (assuming 64x64 tiles)

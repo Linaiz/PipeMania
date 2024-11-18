@@ -3,6 +3,10 @@ import WebFontFile from '../utils/WebFontFile'
 
 export default class TitleScreen extends Phaser.Scene {
 
+    constructor() {
+        super({ key: 'TitleScren'});
+    }
+
     preload() {
         // Special font for the title text is retrieved from GoogleFonts with WebFontLoader
         const font = new WebFontFile(this.load, 'Jersey 25 Charted');
@@ -32,7 +36,7 @@ export default class TitleScreen extends Phaser.Scene {
         const startButton = this.add.image(this.scale.width / 2, this.scale.height / 1.8, 'startButton').setInteractive();
 
         startButton.on('pointerdown', () => {
-            this.scene.start('game');
+            this.scene.start('Game');
         });
 
         // Hover effect for button
