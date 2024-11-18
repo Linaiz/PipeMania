@@ -1,10 +1,11 @@
 import Phaser from 'phaser'
 import WebFontFile from '../utils/WebFontFile'
+import { UI } from '../constants/asset-paths';
 
 export default class TitleScreen extends Phaser.Scene {
 
     constructor() {
-        super({ key: 'TitleScren'});
+        super({ key: 'TitleScreen'});
     }
 
     preload() {
@@ -12,7 +13,7 @@ export default class TitleScreen extends Phaser.Scene {
         const font = new WebFontFile(this.load, 'Jersey 25 Charted');
         this.load.addFile(font)
 
-        this.load.image('startButton', '/assets/ui/button.png');
+        this.load.image('startButton', UI.BUTTON);
     }
 
     create() {

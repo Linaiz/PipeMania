@@ -15,7 +15,7 @@ export default class GridScene extends Phaser.Scene {
     create(data) {
         this.offsetX = data.offsetX;
         this.offsetY = data.offsetY;
-        console.log(data);
+
         this.createGrid(new Grid(7, 9));
 
     }

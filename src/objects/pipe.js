@@ -1,5 +1,6 @@
-import PipeType from '../enums/pipe-type'
-import ConnectionPoint from '../enums/connection-point'
+import PipeType from '../constants/pipe-type'
+import ConnectionPoint from '../constants/connection-point'
+import { SPRITES } from '../constants/asset-paths';
 
 class Pipe {
     #_spritePath;
@@ -27,7 +28,7 @@ class Pipe {
     }
 
     initStraightPipe() {
-        this.#_spritePath = 'assets/pipes/straight.png';
+        this.#_spritePath = SPRITES.PIPE_STRAIGHT;
 
         // Straight pipe can be oriented in 2 ways. The orientation is random.
         randomOrientation = Math.random(); 
@@ -44,7 +45,7 @@ class Pipe {
     }
 
     initCurvedPipe() {
-        this.#_spritePath = 'assets/pipes/curved.png';
+        this.#_spritePath = SPRITES.PIPE_CURVED;
 
         // Curved pipe can be oriented in 4 ways. The orientation is random.
         randomOrientation = Math.random(); 
@@ -71,7 +72,7 @@ class Pipe {
     }
 
     initCrossPipe() {
-        this.#_spritePath = 'assets/pipes/straight.png';
+        this.#_spritePath = SPRITES.PIPE_CROSS;
         this.#_connectionPoints = [
             ConnectionPoint.UP, 
             ConnectionPoint.DOWN, 
