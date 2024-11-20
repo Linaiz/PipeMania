@@ -10,13 +10,8 @@ export default class GridScene extends Phaser.Scene {
     #currentCol = 0;
     #currentAnimation;
 
-    constructor(rows = 7, columns = 9, cellSize = 96, offsetX = 0, offsetY = 0) {
+    constructor() {
         super({ key: 'Grid'});
-        this.rows = rows;
-        this.columns = columns;
-        this.cellSize = cellSize;
-        this.offsetX = offsetX;
-        this.offsetY = offsetY;
     }
 
     preload() {
@@ -26,14 +21,17 @@ export default class GridScene extends Phaser.Scene {
     create(data) {
         this.rows = data.rows;
         this.columns = data.columns;
+        this.cellSize = data.cellSize;
         this.offsetX = data.offsetX;
         this.offsetY = data.offsetY;
+        this.queueScene = data.queueScene;
 
         this.grid = new Grid(this.rows, this.columns);
         this.#createGrid(this.grid);  
         this.#createReloadButton();
         
         this.input.on('pointermove', this.handlePointerMove, this);
+        this.input.on('pointerdown', this.handlePointerDown, this);
     }
 
     #createGrid(grid) {
@@ -41,17 +39,8 @@ export default class GridScene extends Phaser.Scene {
             for (let col = 0; col < grid.columns; col++) {
                 // Calculate x and y for the cell to be drawn
                 const x =  this.#calcGridPositionX(col);
-                const y = this.#calcGridPositionY(row);
-                
-                // Get the sprite for the cell
-                const cell = grid.getCell(row, col);
-                const cellSprite = this.add.image(x, y, cell.spritePath);
-                cellSprite.rotation = Phaser.Math.DegToRad(cell.rotation);
-
-                // Scale the sprite to match cellSize
-                const scaleX = this.cellSize / cellSprite.width;
-                const scaleY = this.cellSize / cellSprite.height;
-                cellSprite.setScale(scaleX, scaleY);
+                const y = this.#calcGridPositionY(row);           
+                this.#addCellSprite(x, y, row, col);
             }
         }
     }
@@ -71,35 +60,52 @@ export default class GridScene extends Phaser.Scene {
     }
 
     handlePointerMove(pointer) {
-        const mouseX = pointer.x;
-        const mouseY = pointer.y;
-    
-        // Check if the mouse is within the grid bounds
-        if (
-            mouseX >= this.offsetX &&
-            mouseX < this.offsetX + this.columns * this.cellSize &&
-            mouseY >= this.offsetY &&
-            mouseY < this.offsetY + this.rows * this.cellSize
-        ) {
+        // Draw selection animation over the current cell under the pointer
+        if (this.#isWithinGridBoundaries(pointer.x, pointer.y)) {
             // Calculate row and column
-            const col = Math.floor((mouseX - this.offsetX) / this.cellSize);
-            const row = Math.floor((mouseY - this.offsetY) / this.cellSize);    
+            const col = this.#calcGridColumn(pointer.x);
+            const row = this.#calcGridRow(pointer.y);
 
             if (row == this.#currentRow && col == this.#currentCol) return;
 
             this.#currentRow = row;
             this.#currentCol = col;
-            
+
             if (this.#currentAnimation) this.#currentAnimation.destroy();
             if (this.grid.getCell(row, col).type == CellType.BLOCKED || 
                 this.grid.getCell(row, col).type == PipeType.START) 
                     return;
 
             this.#currentAnimation = this.#createSelectionAnimation(row, col);
-        } else {
-            if (this.#currentAnimation)
-                this.#currentAnimation.destroy();
+        } 
+        else {
+            this.#currentRow = -1;
+            this.#currentCol = -1;
+            if (this.#currentAnimation) this.#currentAnimation.destroy();
         }
+    }
+    
+    handlePointerDown(pointer) {
+        // Try to place a pipe
+        if (!this.#isWithinGridBoundaries(pointer.x, pointer.y)) return;
+
+        const row = this.#calcGridRow(pointer.y);
+        const col = this.#calcGridColumn(pointer.x);
+        if (!this.grid.canPlacePipe(row, col)) return;
+
+        this.#placePipe(row, col);
+    }
+
+    #placePipe(row, col) {
+        const newPipe = this.queueScene.getNextPipe();
+
+        this.grid.getCell(row, col).destroy();
+        this.grid.setCell(row, col, newPipe);
+
+        // Add new pipe image at the location in the grid
+        const x = this.#calcGridPositionX(col);
+        const y = this.#calcGridPositionY(row);
+        this.#addCellSprite(x, y, row, col);   
     }
 
     #createSelectionAnimation(row, col) {  
@@ -115,6 +121,18 @@ export default class GridScene extends Phaser.Scene {
         return selection;
     }
 
+    #addCellSprite(x, y, row, col) {
+        const cell = this.grid.getCell(row, col);
+        const cellSprite = this.add.image(x, y, cell.spritePath);
+        cellSprite.rotation = Phaser.Math.DegToRad(cell.rotation);
+        this.grid.setCellSprite(row, col, cellSprite);
+
+        // Scale the sprite to match cellSize
+        const scaleX = this.cellSize / cellSprite.width;
+        const scaleY = this.cellSize / cellSprite.height;
+        cellSprite.setScale(scaleX, scaleY);
+    }
+
     #calcGridPositionX(col) {
         return col * this.cellSize + this.cellSize / 2 + this.offsetX;
     }
@@ -122,4 +140,20 @@ export default class GridScene extends Phaser.Scene {
     #calcGridPositionY(row){
         return row * this.cellSize + this.cellSize / 2 + this.offsetY;
     }
+
+    #calcGridRow(y) {
+        return Math.floor((y - this.offsetY) / this.cellSize);  
+    }
+
+    #calcGridColumn(x) {
+        return Math.floor((x - this.offsetX) / this.cellSize);
+    }
+
+    #isWithinGridBoundaries(x, y) {
+        return (x >= this.offsetX &&
+                x < this.offsetX + this.columns * this.cellSize &&
+                y >= this.offsetY &&
+                y < this.offsetY + this.rows * this.cellSize);
+    }
+
 }

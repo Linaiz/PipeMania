@@ -23,7 +23,6 @@ export default class Queue {
         const pipe = this.queue.removeBack();
         // append new random pipe on the beginning of the queue
         this.queue.addFront(this.#getRandomPipe());
-
         return pipe;
     }
 

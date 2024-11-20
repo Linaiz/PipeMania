@@ -13,6 +13,11 @@ export default class Pipe extends GridElement {
         this.#initPipe();
     }
 
+    destroy() {
+        super.destroy();
+        this.#_connectionPoints = null;
+    }
+
     #initPipe() {
         switch (this.type) {
             case PipeType.STRAIGHT:

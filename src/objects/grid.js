@@ -15,7 +15,14 @@ export default class Grid {
 
     createGrid() {
         // Populate grid with empty cells
-        const grid = Array.from({ length: this.rows }, () => Array(this.columns).fill(new Cell(CellType.EMPTY)));
+        const grid = [];
+
+        for (let row = 0; row < this.rows; row++) {
+            grid[row] = [];      
+            for (let col = 0; col < this.columns; col++) {
+                grid[row][col] = new Cell(CellType.EMPTY);
+            }
+        }
    
         // Add blocked cells
         var i = 0;
@@ -74,10 +81,8 @@ export default class Grid {
     }
 
     getCell(row, col) {
-        if (this.isValidCell(row, col)) {
-            return this.grid[row][col];
-        }
-        return null;
+        if (!this.isValidCell(row, col)) return null;
+        return this.grid[row][col];
     }
 
     setCell(row, col, value) {
@@ -86,9 +91,24 @@ export default class Grid {
         }
     }
 
+    setCellSprite(row, col, sprite) {
+        if (!this.isValidCell(row, col)) return null;
+        this.grid[row][col].sprite = sprite;
+    }
+
     // Check if a cell is within the grid boundaries
     isValidCell(row, col) {
         return row >= 0 && row < this.rows && col >= 0 && col < this.columns;
+    }
+
+    canPlacePipe(row, col) {
+        if (!this.isValidCell(row, col)) return false;
+        const cell = this.grid[row][col];
+
+        return  cell.type == CellType.EMPTY ||
+                cell.type == PipeType.STRAIGHT ||
+                cell.type == PipeType.CURVED ||
+                cell.type == PipeType.CROSS;
     }
 
 }

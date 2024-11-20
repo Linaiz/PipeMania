@@ -1,4 +1,5 @@
 export default class GridElement { 
+    sprite;
     _spritePath;
     _type;
     _rotation;
@@ -9,6 +10,17 @@ export default class GridElement {
 
     constructor(type) { 
         this._type = type;
+    }
+
+    destroy() {
+        if (this.sprite) {
+            this.sprite.destroy(); // Removes the sprite from the scene
+            this.sprite = null; // Nullify the reference for garbage collection
+        }
+
+        this._spritePath = null;
+        this._type = null;
+        this._rotation = null;
     }
 
 }

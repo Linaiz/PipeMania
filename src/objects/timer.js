@@ -1,42 +1,39 @@
+import { TIMER_EVENTS, timerEmitter } from "./events";
+
 export default class Timer {
     /**
      * Creates a Timer instance.
-     * @param {Phaser.Scene} scene - The scene where the timer will run.
      * @param {number} duration - Timer duration in seconds.
-   */
-    constructor(scene, duration) {
-        this.scene = scene; 
+     */
+    constructor(duration) {
         this.duration = duration;
         this.remainingTime = this.duration;
-        this.timerEvent = null;
+        this.timerInterval = null;
     }
 
     start() {
-        if (this.timerEvent) return; // Prevent multiple starts
-    
-        this.timerEvent = this.scene.time.addEvent({
-            delay: 1000, // 1 second interval
-            callback: this.updateTimer,
-            callbackScope: this,
-            loop: true,
-        });
+        if (this.timerInterval) return; // Prevent multiple starts
+
+        timerEmitter.emit(TIMER_EVENTS.TIME_START, this.remainingTime);
+        this.timerInterval = setInterval(() => {
+            this.updateTimer();
+        }, 1000); // Call updateTimer every 1 second
     }
 
     stop() {
-        if (this.timerEvent) {
-            this.timerEvent.remove();
-            this.timerEvent = null;
+        if (this.timerInterval) {
+            clearInterval(this.timerInterval);
+            this.timerInterval = null;
         }
     }
 
     updateTimer() {
         if (this.remainingTime > 0) {
-            this.remainingTime--;  
-            // Update UI text
+            this.remainingTime--;
+            timerEmitter.emit(TIMER_EVENTS.UPDATE_TIMER, this.remainingTime);
         } else {
             this.stop();
-            // Emit Time Up event
+            timerEmitter.emit(TIMER_EVENTS.TIME_UP);
         }
     }
-  
 }

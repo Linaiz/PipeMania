@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import Timer from '../objects/timer';
 import { SPRITES, ANIMATIONS } from '../constants/asset-paths';
 
 export default class Game extends Phaser.Scene {
@@ -24,23 +25,32 @@ export default class Game extends Phaser.Scene {
     create() {
         this.#createAnimations();
 
-        const gridSettings = {
-            rows: 7,
-            columns: 9,
-            offsetX: 200,
-            offsetY: 95,
-        }
-
         const queueSettings = {
             queueLength: 5,
             offsetX: 100,
             offsetY: 205,
+            cellSize: 96,
             spacing: 10,
         }
         
-        this.scene.launch("Grid", gridSettings);
+        const gridSettings = {
+            rows: 7,
+            columns: 9,
+            cellSize: 96,
+            offsetX: 200,
+            offsetY: 95,
+        }
+
         this.scene.launch("Queue", queueSettings);
+        
+        const queueScene = this.scene.get('Queue');
+        this.scene.launch("Grid", {queueScene, ...gridSettings});
+
+        
         this.scene.launch("Ui");
+
+        const timer = new Timer(15);
+        timer.start();
     }
 
     #createAnimations() {
