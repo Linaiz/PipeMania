@@ -25,11 +25,14 @@ export default class Game extends Phaser.Scene {
         }
 
         const queueSettings = {
-            queueLength: 7,
+            queueLength: 5,
+            offsetX: 100,
+            offsetY: 150,
+            spacing: 10,
         }
         
         this.scene.launch("Grid", gridSettings);
-        // launch queue scene
+        this.scene.launch("Queue", queueSettings);
         this.scene.launch("Ui");
     }
 }

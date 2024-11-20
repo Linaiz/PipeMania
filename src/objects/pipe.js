@@ -85,6 +85,7 @@ export default class Pipe extends GridElement {
 
     initCrossPipe() {
         this._spritePath = SPRITES.PIPE_CROSS;
+        this._rotation = 0; 
         this.#_connectionPoints = [
             ConnectionPoint.UP, 
             ConnectionPoint.DOWN, 

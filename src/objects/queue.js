@@ -8,23 +8,31 @@ export default class Queue {
     constructor(queueLength) {
         this.queueLength = queueLength;
         this.queue = new Deque();
-        this.initQueue;
+        this.initQueue();
     }
 
     initQueue() {
         // Populate queue with random pipes
-        for(i = 0; i < this.queueLength; i++) {
-            this.queue.addBack(this.getRandomPipe());
+        for(let i = 0; i < this.queueLength; i++) {
+            this.queue.addFront(this.getRandomPipe());
         }
     }
 
     popPipe() {
         // Return next pipe in the queue
-        const pipe = this.queue.removeFront();
+        const pipe = this.queue.removeBack();
         // append new random pipe on the beginning of the queue
-        this.queue.addBack(this.getRandomPipe());
+        this.queue.addFront(this.getRandomPipe());
 
         return pipe;
+    }
+
+    getFront() {
+        return this.queue.front;
+    }
+
+    getBack() {
+        return this.queue.back;
     }
 
     getRandomPipe() {
