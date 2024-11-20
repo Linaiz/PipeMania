@@ -1,4 +1,5 @@
 import Phaser from 'phaser'
+import { SPRITES } from '../constants/asset-paths'
 
 export default class Game extends Phaser.Scene {
 
@@ -7,29 +8,28 @@ export default class Game extends Phaser.Scene {
     }
 
     preload() {
-        // this.load.image('pipeStraight', '/assets/pipes/straight.png');
-        // this.load.image('pipeCurved', '/assets/pipes/curved.png');
-        // this.load.image('pipeCross', '/assets/pipes/cross.png');
-        // this.load.image('pipeStart', '/assets/pipes/start.png');
-        // this.load.image('cellEmpty', '/assets/pipes/empty.png');
-        // this.load.image('cellBlocked', '/assets/pipes/blocked.png');
+        this.load.image(SPRITES.PIPE_STRAIGHT, SPRITES.PIPE_STRAIGHT);
+        this.load.image(SPRITES.PIPE_CURVED, SPRITES.PIPE_CURVED);
+        this.load.image(SPRITES.PIPE_CROSS, SPRITES.PIPE_CROSS);
+        this.load.image(SPRITES.PIPE_START, SPRITES.PIPE_START);
+        this.load.image(SPRITES.CELL_EMPTY, SPRITES.CELL_EMPTY);
+        this.load.image(SPRITES.CELL_BLOCKED, SPRITES.CELL_BLOCKED);
     }
 
     create() {
         const gridSettings = {
+            rows: 7,
+            columns: 9,
             offsetX: 200,
             offsetY: 95,
+        }
+
+        const queueSettings = {
+            queueLength: 7,
         }
         
         this.scene.launch("Grid", gridSettings);
         // launch queue scene
         this.scene.launch("Ui");
-        //this.grid = new Grid(7, 9);
-        // Define grid dimensions and tile size
-        // this.gridSize = 96; // Size of each tile (assuming 64x64 tiles)
-        // this.gridWidth = 9;
-        // this.gridHeight = 7;
-        // this.gridPaddingX = (this.scale.width - (this.gridWidth * this.gridSize)) - 64;
-        // this.gridPaddingY = 64;
     }
 }

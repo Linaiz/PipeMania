@@ -1,8 +1,8 @@
-import { getRandomInt } from '../utils/math-utils'
-import PipeType from '../constants/pipe-type'
-import CellType from '../constants/cell-type'
 import Pipe from '../objects/pipe'
+import PipeType from '../constants/pipe-type'
 import Cell from '../objects/cell'
+import CellType from '../constants/cell-type'
+import { getRandomInt } from '../utils/math-utils'
 
 export default class Grid {
 
@@ -55,6 +55,7 @@ export default class Grid {
                 break;
         }
 
+        // Make sure the starting pipe isn't blocked by a blocked cell
         while (true) {
             const row = getRandomInt(minRow, maxRow);
             const col = getRandomInt(minCol, maxCol);
@@ -79,7 +80,6 @@ export default class Grid {
         return null;
     }
 
-    // Set the value of a cell
     setCell(row, col, value) {
         if (this.isValidCell(row, col)) {
             this.grid[row][col] = value;

@@ -1,33 +1,29 @@
 import Phaser from 'phaser'
 import Grid from '../objects/grid'
 import { UI } from '../constants/asset-paths'
-import { SPRITES } from '../constants/asset-paths'
 
 export default class GridScene extends Phaser.Scene {
 
-    constructor(cellSize = 96, offsetX = 0, offsetY = 0) {
+    constructor(rows = 7, columns = 9, cellSize = 96, offsetX = 0, offsetY = 0) {
         super({ key: 'Grid'});
+        this.rows = rows;
+        this.columns = columns;
         this.cellSize = cellSize;
         this.offsetX = offsetX;
         this.offsetY = offsetY;
     }
 
     preload() {
-        this.load.image(SPRITES.PIPE_STRAIGHT, SPRITES.PIPE_STRAIGHT);
-        this.load.image(SPRITES.PIPE_CURVED, SPRITES.PIPE_CURVED);
-        this.load.image(SPRITES.PIPE_CROSS, SPRITES.PIPE_CROSS);
-        this.load.image(SPRITES.PIPE_START, SPRITES.PIPE_START);
-        this.load.image(SPRITES.CELL_EMPTY, SPRITES.CELL_EMPTY);
-        this.load.image(SPRITES.CELL_BLOCKED, SPRITES.CELL_BLOCKED);
-
         this.load.image(UI.RELOAD_BUTTON, UI.RELOAD_BUTTON);
     }
 
     create(data) {
+        this.rows = data.rows;
+        this.columns = data.columns;
         this.offsetX = data.offsetX;
         this.offsetY = data.offsetY;
 
-        this.grid = new Grid(7, 9);
+        this.grid = new Grid(this.rows, this.columns);
         this.createGrid(this.grid);
         console.log(this.grid);
 
