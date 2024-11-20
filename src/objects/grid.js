@@ -90,9 +90,5 @@ export default class Grid {
     isValidCell(row, col) {
         return row >= 0 && row < this.rows && col >= 0 && col < this.columns;
     }
-
-    printGrid() {
-        console.table(this.grid);
-    }
-
+    
 }
