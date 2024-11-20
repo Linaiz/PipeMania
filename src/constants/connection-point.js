@@ -1,4 +1,4 @@
-class ConnectionPoint {
+export default class ConnectionPoint {
     static #UP = 0;
     static #DOWN = 1;
     static #LEFT = 2;

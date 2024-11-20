@@ -1,4 +1,5 @@
 import Grid from '../objects/grid'
+import { SPRITES } from '../constants/asset-paths';
 
 export default class GridScene extends Phaser.Scene {
 
@@ -10,6 +11,12 @@ export default class GridScene extends Phaser.Scene {
     }
 
     preload() {
+        this.load.image(SPRITES.PIPE_STRAIGHT, SPRITES.PIPE_STRAIGHT);
+        this.load.image(SPRITES.PIPE_CURVED, SPRITES.PIPE_CURVED);
+        this.load.image(SPRITES.PIPE_CROSS, SPRITES.PIPE_CROSS);
+        this.load.image(SPRITES.PIPE_START, SPRITES.PIPE_START);
+        this.load.image(SPRITES.CELL_EMPTY, SPRITES.CELL_EMPTY);
+        this.load.image(SPRITES.CELL_BLOCKED, SPRITES.CELL_BLOCKED);
     }
 
     create(data) {
@@ -26,9 +33,13 @@ export default class GridScene extends Phaser.Scene {
                 const x = col * this.cellSize + this.cellSize / 2 + this.offsetX;
                 const y = row * this.cellSize + this.cellSize / 2 + this.offsetY;
                 
-                // Placeholder for a pipe
-                const placeholder = this.add.rectangle(x, y, this.cellSize, this.cellSize, 0xcccccc).setStrokeStyle(2, 0x888888);
+                const cell = grid.getCell(row, col);
+                const cellSprite = this.add.image(x, y, cell.spritePath);
+                cellSprite.rotation = Phaser.Math.DegToRad(cell.rotation);
 
+                const scaleX = this.cellSize / cellSprite.width;
+                const scaleY = this.cellSize / cellSprite.height;
+                cellSprite.setScale(scaleX, scaleY);
             }
         }
     }
