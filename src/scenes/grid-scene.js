@@ -24,22 +24,26 @@ export default class GridScene extends Phaser.Scene {
         this.offsetY = data.offsetY;
 
         this.grid = new Grid(this.rows, this.columns);
-        this.createGrid(this.grid);
+        this.#createGrid(this.grid);
         console.log(this.grid);
 
-        this.createReloadButton();
+        this.#createReloadButton();
+
     }
 
-    createGrid(grid) {
+    #createGrid(grid) {
         for (let row = 0; row < grid.rows; row++) {
             for (let col = 0; col < grid.columns; col++) {
+                // Calculate x and y for the cell to be drawn
                 const x = col * this.cellSize + this.cellSize / 2 + this.offsetX;
                 const y = row * this.cellSize + this.cellSize / 2 + this.offsetY;
                 
+                // Get the sprite for the cell
                 const cell = grid.getCell(row, col);
                 const cellSprite = this.add.image(x, y, cell.spritePath);
                 cellSprite.rotation = Phaser.Math.DegToRad(cell.rotation);
 
+                // Scale the sprite to match cellSize
                 const scaleX = this.cellSize / cellSprite.width;
                 const scaleY = this.cellSize / cellSprite.height;
                 cellSprite.setScale(scaleX, scaleY);
@@ -47,7 +51,7 @@ export default class GridScene extends Phaser.Scene {
         }
     }
 
-    createReloadButton() {
+    #createReloadButton() {
         const button = this.add.sprite(975, 50, UI.RELOAD_BUTTON)
         .setScale(0.6)
         .setInteractive()

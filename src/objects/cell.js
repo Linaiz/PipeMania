@@ -5,11 +5,11 @@ import { SPRITES } from '../constants/asset-paths';
 export default class Cell extends GridElement {
     constructor(type) { 
         super(type);
-        this.initCell();
+        this.#initCell();
         this._rotation = 0;
     }
 
-    initCell() {
+    #initCell() {
         switch(this.type) {
             case CellType.EMPTY:
                 this._spritePath = SPRITES.CELL_EMPTY;

@@ -8,13 +8,13 @@ export default class Queue {
     constructor(queueLength) {
         this.queueLength = queueLength;
         this.queue = new Deque();
-        this.initQueue();
+        this.#initQueue();
     }
 
-    initQueue() {
+    #initQueue() {
         // Populate queue with random pipes
         for(let i = 0; i < this.queueLength; i++) {
-            this.queue.addFront(this.getRandomPipe());
+            this.queue.addFront(this.#getRandomPipe());
         }
     }
 
@@ -22,7 +22,7 @@ export default class Queue {
         // Return next pipe in the queue
         const pipe = this.queue.removeBack();
         // append new random pipe on the beginning of the queue
-        this.queue.addFront(this.getRandomPipe());
+        this.queue.addFront(this.#getRandomPipe());
 
         return pipe;
     }
@@ -35,7 +35,7 @@ export default class Queue {
         return this.queue.back;
     }
 
-    getRandomPipe() {
+    #getRandomPipe() {
         // 4 types of curved + 2 types of straight + 1 type of cross = 7 possible pipes
         const random = getRandomInt(0, 7);
 

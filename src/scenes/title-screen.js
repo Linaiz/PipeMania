@@ -18,11 +18,11 @@ export default class TitleScreen extends Phaser.Scene {
 
     create() {
         this.cameras.main.setBackgroundColor('#84d79e')
-        this.createTitle()
-        this.createStartButton()
+        this.#createTitle()
+        this.#createStartButton()
     }
 
-    createTitle() {
+    #createTitle() {
         const titleText = this.add.text(this.scale.width / 2, this.scale.height / 3, 'Pipe Mania', {
             fontSize: '142px',
             color: '#ff854c',
@@ -32,7 +32,7 @@ export default class TitleScreen extends Phaser.Scene {
         titleText.setOrigin(0.5);
     }
 
-    createStartButton() {
+    #createStartButton() {
         // Start button will start the game scene once pressed
         const startButton = this.add.image(this.scale.width / 2, this.scale.height / 1.8, 'startButton').setInteractive();
 

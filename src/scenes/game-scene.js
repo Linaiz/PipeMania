@@ -1,5 +1,5 @@
 import Phaser from 'phaser'
-import { SPRITES } from '../constants/asset-paths'
+import { SPRITES, ANIMATIONS } from '../constants/asset-paths'
 
 export default class Game extends Phaser.Scene {
 
@@ -14,9 +14,16 @@ export default class Game extends Phaser.Scene {
         this.load.image(SPRITES.PIPE_START, SPRITES.PIPE_START);
         this.load.image(SPRITES.CELL_EMPTY, SPRITES.CELL_EMPTY);
         this.load.image(SPRITES.CELL_BLOCKED, SPRITES.CELL_BLOCKED);
+
+        this.load.spritesheet(ANIMATIONS.SELECTION, ANIMATIONS.SELECTION, {
+            frameWidth: 136,
+            frameHeight: 136,
+        });
     }
 
     create() {
+        this.#createAnimations();
+
         const gridSettings = {
             rows: 7,
             columns: 9,
@@ -27,12 +34,25 @@ export default class Game extends Phaser.Scene {
         const queueSettings = {
             queueLength: 5,
             offsetX: 100,
-            offsetY: 150,
+            offsetY: 205,
             spacing: 10,
         }
         
         this.scene.launch("Grid", gridSettings);
         this.scene.launch("Queue", queueSettings);
         this.scene.launch("Ui");
+    }
+
+    #createAnimations() {
+        this.#createSelectionAnimation();
+    }
+
+    #createSelectionAnimation() {
+        this.anims.create({
+            key: ANIMATIONS.SELECTION,
+            frames: this.anims.generateFrameNumbers(ANIMATIONS.SELECTION, { start: 0, end: 2 }),
+            frameRate: 9,
+            repeat: -1
+        });
     }
 }

@@ -10,22 +10,22 @@ export default class Pipe extends GridElement {
 
     constructor(type) { 
         super(type);
-        this.initPipe();
+        this.#initPipe();
     }
 
-    initPipe() {
+    #initPipe() {
         switch (this.type) {
             case PipeType.STRAIGHT:
-                this.initStraightPipe();
+                this.#initStraightPipe();
                 break;
             case PipeType.CURVED:
-                this.initCurvedPipe();
+                this.#initCurvedPipe();
                 break;
             case PipeType.CROSS:
-                this.initCrossPipe();
+                this.#initCrossPipe();
                 break;
             case PipeType.START:
-                this.initStartPipe();
+                this.#initStartPipe();
                 break;
         }
     }
@@ -39,7 +39,7 @@ export default class Pipe extends GridElement {
         return false;
     }
 
-    initStraightPipe() {
+    #initStraightPipe() {
         this._spritePath = SPRITES.PIPE_STRAIGHT;
 
         // Straight pipe can be oriented in 2 ways. The orientation is random.
@@ -56,7 +56,7 @@ export default class Pipe extends GridElement {
         }
     }
 
-    initCurvedPipe() {
+    #initCurvedPipe() {
         this._spritePath = SPRITES.PIPE_CURVED;
 
         // Curved pipe can be oriented in 4 ways. The orientation is random.
@@ -83,7 +83,7 @@ export default class Pipe extends GridElement {
         }
     }
 
-    initCrossPipe() {
+    #initCrossPipe() {
         this._spritePath = SPRITES.PIPE_CROSS;
         this._rotation = 0; 
         this.#_connectionPoints = [
@@ -94,7 +94,7 @@ export default class Pipe extends GridElement {
         ];
     }
 
-    initStartPipe() {
+    #initStartPipe() {
         this._spritePath = SPRITES.PIPE_START;
 
         // Starting can be oriented in 4 ways. The orientation is random.
@@ -116,7 +116,5 @@ export default class Pipe extends GridElement {
             this.#_connectionPoints = [ConnectionPoint.LEFT];
         }
     }
-
-
 
 }

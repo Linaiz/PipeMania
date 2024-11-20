@@ -1,5 +1,7 @@
 import Phaser from 'phaser'
 import Queue from '../objects/queue'
+import { ANIMATIONS } from '../constants/asset-paths'
+
 
 export default class QueueScene extends Phaser.Scene { 
     
@@ -19,17 +21,18 @@ export default class QueueScene extends Phaser.Scene {
         this.spacing = data.spacing;
 
         this.queue = new Queue(this.queueLength);
-        this.drawQueue(this.queue);
-        this.createText();
+        this.#createQueue(this.queue);
+        this.#createSelectionAnimation();
+        this.#createText();
 
         console.log(this.queue);
     }
 
-    drawQueue(queue) {
-        let current = queue.getBack();
-        
-        // Draw current pipe 
-        this.addPipe(current.value, this.offsetX, this.offsetY);
+    #createQueue(queue) {
+        let current = queue.getBack();    
+
+        // Draw current pipe
+        this.#addPipe(current.value, this.offsetX, this.offsetY);
 
         // Draw rest of the pipes in the queue
         current = current.next;
@@ -38,16 +41,14 @@ export default class QueueScene extends Phaser.Scene {
             const x = this.offsetX;
             const y = i * (this.cellSize + this.spacing) + this.cellSize / 2 + this.offsetY;
 
-            this.addPipe(current.value, x, y);
+            this.#addPipe(current.value, x, y);
 
             i += 1;
-            console.log(current);
             current = current.next;
         }
-
     }
 
-    addPipe(pipe, x, y) {
+    #addPipe(pipe, x, y) {
         const pipeSprite = this.add.image(x, y, pipe.spritePath);
         pipeSprite.rotation = Phaser.Math.DegToRad(pipe.rotation);
 
@@ -56,7 +57,15 @@ export default class QueueScene extends Phaser.Scene {
         pipeSprite.setScale(scaleX, scaleY);
     }
 
-    createText() {
+    #createSelectionAnimation() {   
+        const selection = this.add.sprite(this.offsetX, this.offsetY, ANIMATIONS.SELECTION);
+        const scaleX = this.cellSize * 1.1 / selection.width;
+        const scaleY = this.cellSize * 1.1 / selection.height;
+        selection.setScale(scaleX, scaleY);
+        selection.play(ANIMATIONS.SELECTION);
+    }
+
+    #createText() {
         const text = this.add.text(this.offsetX + 5, this.offsetY + this.cellSize - this.spacing, 'Next:', {
             fontSize: '28px',
             fontFamily: 'Monaco',
