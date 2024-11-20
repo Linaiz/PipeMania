@@ -17,8 +17,8 @@ export default class Game extends Phaser.Scene {
 
     create() {
         const gridSettings = {
-            offsetX: 64,
-            offsetY: 64,
+            offsetX: 200,
+            offsetY: 95,
         }
         
         this.scene.launch("Grid", gridSettings);

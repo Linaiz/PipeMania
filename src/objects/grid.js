@@ -43,14 +43,14 @@ export default class Grid {
                 // UP
                 minRow = Math.floor(maxRow / 2);
             case 90:
-                // LEFT
-                minCol = Math.floor(maxCol / 2);
+                // RIGHT
+                maxCol = Math.floor(maxCol / 2);            
             case 180:
                 // DOWN
                 maxRow = Math.floor(maxRow / 2);
             case 270:
-                // RIGHT
-                maxCol = Math.floor(maxCol / 2);
+                // LEFT
+                minCol = Math.floor(maxCol / 2);
             default:
                 break;
         }
@@ -90,5 +90,5 @@ export default class Grid {
     isValidCell(row, col) {
         return row >= 0 && row < this.rows && col >= 0 && col < this.columns;
     }
-    
+
 }

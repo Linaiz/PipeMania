@@ -1,5 +1,7 @@
+import Phaser from 'phaser'
 import Grid from '../objects/grid'
-import { SPRITES } from '../constants/asset-paths';
+import { UI } from '../constants/asset-paths'
+import { SPRITES } from '../constants/asset-paths'
 
 export default class GridScene extends Phaser.Scene {
 
@@ -17,14 +19,19 @@ export default class GridScene extends Phaser.Scene {
         this.load.image(SPRITES.PIPE_START, SPRITES.PIPE_START);
         this.load.image(SPRITES.CELL_EMPTY, SPRITES.CELL_EMPTY);
         this.load.image(SPRITES.CELL_BLOCKED, SPRITES.CELL_BLOCKED);
+
+        this.load.image(UI.RELOAD_BUTTON, UI.RELOAD_BUTTON);
     }
 
     create(data) {
         this.offsetX = data.offsetX;
         this.offsetY = data.offsetY;
 
-        this.createGrid(new Grid(7, 9));
+        this.grid = new Grid(7, 9);
+        this.createGrid(this.grid);
+        console.log(this.grid);
 
+        this.createReloadButton();
     }
 
     createGrid(grid) {
@@ -42,5 +49,19 @@ export default class GridScene extends Phaser.Scene {
                 cellSprite.setScale(scaleX, scaleY);
             }
         }
+    }
+
+    createReloadButton() {
+        const button = this.add.sprite(975, 50, UI.RELOAD_BUTTON)
+        .setScale(0.6)
+        .setInteractive()
+        .on('pointerdown', () => { this.scene.restart(); });
+
+        button.on('pointerover', () => {
+            button.setScale(0.65);
+            });
+        button.on('pointerout', () => {
+            button.setScale(0.6); 
+        });
     }
 }

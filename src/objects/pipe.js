@@ -107,12 +107,10 @@ export default class Pipe extends GridElement {
             this.#_connectionPoints = [ConnectionPoint.RIGHT];
         }
         else if (randomOrientation < 0.75) {
-            // up->left direction
             this._rotation = 180; 
             this.#_connectionPoints = [ConnectionPoint.DOWN];
         }
         else {
-            // up->right direction
             this._rotation = 270; 
             this.#_connectionPoints = [ConnectionPoint.LEFT];
         }
