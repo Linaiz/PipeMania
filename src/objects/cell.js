@@ -1,5 +1,5 @@
 import GridElement from './grid-element';
-import CellType from '../constants/cell-type'
+import CellType from '../constants/cell-type';
 import { SPRITES } from '../constants/asset-paths';
 
 export default class Cell extends GridElement {

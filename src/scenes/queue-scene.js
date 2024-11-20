@@ -1,6 +1,6 @@
-import Phaser from 'phaser'
-import Queue from '../objects/queue'
-import { ANIMATIONS } from '../constants/asset-paths'
+import Phaser from 'phaser';
+import Queue from '../objects/queue';
+import { ANIMATIONS } from '../constants/asset-paths';
 
 
 export default class QueueScene extends Phaser.Scene { 

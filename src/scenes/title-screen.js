@@ -1,5 +1,5 @@
-import Phaser from 'phaser'
-import WebFontFile from '../utils/WebFontFile'
+import Phaser from 'phaser';
+import WebFontFile from '../utils/WebFontFile';
 import { UI } from '../constants/asset-paths';
 
 export default class TitleScreen extends Phaser.Scene {

@@ -1,5 +1,5 @@
-import Phaser from 'phaser'
-import { SPRITES, ANIMATIONS } from '../constants/asset-paths'
+import Phaser from 'phaser';
+import { SPRITES, ANIMATIONS } from '../constants/asset-paths';
 
 export default class Game extends Phaser.Scene {
 

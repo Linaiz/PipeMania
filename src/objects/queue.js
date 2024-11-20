@@ -1,7 +1,7 @@
-import Pipe from '../objects/pipe'
-import PipeType from '../constants/pipe-type'
-import Deque from '../utils/deque'
-import { getRandomInt } from '../utils/math-utils'
+import Pipe from '../objects/pipe';
+import PipeType from '../constants/pipe-type';
+import Deque from '../utils/deque';
+import { getRandomInt } from '../utils/math-utils';
 
 export default class Queue {
 
