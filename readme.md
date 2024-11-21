@@ -3,6 +3,7 @@
 
 
 This is a clone of the classical grid-based game PipeMania, developed with `HTML` and `JavaScript`, using the `Phaser` framework.
+![gameplay](pipe.gif)
 
 
 ### Features
