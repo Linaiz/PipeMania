@@ -135,6 +135,7 @@ export default class Grid {
     progressWaterFlow() {
         if (this.#fillNextCell(this.startRow, this.startCol)){
             pipeEmitter.emit(PIPE_EVENTS.FILL_PIPE, this.startRow, this.startCol);
+            waterEmitter.emit(WATER_EVENTS.FILL_CELL);
         } 
         else {
             waterEmitter.emit(WATER_EVENTS.WATER_STOP);
