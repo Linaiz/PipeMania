@@ -102,19 +102,7 @@ export default class GridScene extends Phaser.Scene {
         const y = this.#calcGridPositionY(row);  
         this.#addCellSprite(x, y, row, col);
     }
-
-    #placePipe(row, col) {
-        const newPipe = this.queueScene.getNextPipe();
-
-        this.grid.getCell(row, col).destroy();
-        this.grid.setCell(row, col, newPipe);
-
-        // Add new pipe image at the location in the grid
-        const x = this.#calcGridPositionX(col);
-        const y = this.#calcGridPositionY(row);
-        this.#addCellSprite(x, y, row, col);   
-    }
-
+    
     #createSelectionAnimation(row, col) {  
         const x =  this.#calcGridPositionX(col);
         const y = this.#calcGridPositionY(row);
