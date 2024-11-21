@@ -1,3 +1,7 @@
+/**
+ * Pipe and Cell inherit from GridElement.
+ * They are elements that can be placed in a grid.
+ */
 export default class GridElement { 
     sprite;
     _spritePath;

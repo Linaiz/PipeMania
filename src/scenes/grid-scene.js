@@ -12,9 +12,6 @@ export default class GridScene extends Phaser.Scene {
     #currentCol = 0;
     #currentAnimation;
 
-    /**
-     * Visual reperesentaton of the grid.
-     */
     constructor() {
         super({ key: 'Grid'});
     }

@@ -15,6 +15,11 @@ export default class Pipe extends GridElement {
     get filledSpritePath() { return this.#filledSpritePath; }
     get connectionPoints() { return this.#connectionPoints; }
 
+    /**
+     * Creates an instance of a pipe of the specified type.
+     * Associates the correct pipe orientation, connection points and sprite path.
+     * @param {PipeType} type Type of the pipe to be created.
+     */
     constructor(type) { 
         super(type);
         this.filled = false;

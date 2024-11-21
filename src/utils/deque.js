@@ -1,3 +1,6 @@
+/**
+ * Double-Ended Queue, for fast insertions and delections from either side of the queue.
+ */
 export default class Deque {
     constructor() {
         this.front = this.back = undefined;
