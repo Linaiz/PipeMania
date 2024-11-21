@@ -51,11 +51,6 @@ Use mouse pointer to place the pipes, and create the longest pipe path possible!
 In this version, the game consists of only one level, at the end of which either a Victory or a Loss is achieved.
 The game can be reloaded by refreshing the page.
 
-The **Reload** button can be used to reload the **Grid**, in order to observe the random grid generation, but it *does not reload the game*. 
-*Note:* if the reload is triggered succesively too quickly, it will freeze the scene due to incomplete executions.
-
-![reloadButton](./public/assets/ui/reload-button.png)
-
 ---
 
 ## About the project

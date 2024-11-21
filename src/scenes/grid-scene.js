@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import Grid from '../objects/grid';
-import { ANIMATIONS, UI } from '../constants/asset-paths';
+import { ANIMATIONS } from '../constants/asset-paths';
 import { PIPE_EVENTS, pipeEmitter } from '../objects/events';
 
 /**
@@ -16,10 +16,6 @@ export default class GridScene extends Phaser.Scene {
         super({ key: 'Grid'});
     }
 
-    preload() {
-        this.load.image(UI.RELOAD_BUTTON, UI.RELOAD_BUTTON);
-    }
-
     create(data) {
         this.rows = data.rows;
         this.columns = data.columns;
@@ -29,8 +25,7 @@ export default class GridScene extends Phaser.Scene {
 
         this.grid = new Grid(this.rows, this.columns);
         this.#createGrid(this.grid);  
-        this.#createReloadButton();
-        
+
         this.input.on('pointermove', this.handlePointerMove, this);
         this.input.on('pointerdown', this.handlePointerDown, this);
 
@@ -46,20 +41,6 @@ export default class GridScene extends Phaser.Scene {
                 this.#addCellSprite(x, y, row, col);
             }
         }
-    }
-
-    #createReloadButton() {
-        const button = this.add.sprite(975, 50, UI.RELOAD_BUTTON)
-        .setScale(0.6)
-        .setInteractive()
-        .on('pointerdown', () => { this.scene.restart(); });
-
-        button.on('pointerover', () => {
-            button.setScale(0.65);
-            });
-        button.on('pointerout', () => {
-            button.setScale(0.6); 
-        });
     }
 
     handlePointerMove(pointer) {

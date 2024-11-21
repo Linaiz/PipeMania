@@ -16,10 +16,11 @@ export default class Ui extends Phaser.Scene {
     }
 
     #createTimerText() {
-        this.timerText = this.add.text(210, 45, 'Time: 30', {
-            fontSize: '24px',
-            color: '#fff',
-        });
+        this.timerText = this.add.text(215, 45, 'Time: 30', {
+            fontSize: '32px',
+            color: '#c8ff94',
+            fontFamily: 'Arial',
+        }).setShadow(2, 2, '#ff854c');
 
         timerEmitter.on(TIMER_EVENTS.TIME_START, (remainingTime) => {
             this.timerText.setText(`Time: ${remainingTime}`);
@@ -36,9 +37,10 @@ export default class Ui extends Phaser.Scene {
 
     #createGoalText() {
         this.goalText = this.add.text(610, 45, 'Goal: 15', {
-            fontSize: '24px',
-            color: '#fff',
-        });
+            fontSize: '32px',
+            color: '#c8ff94',
+            fontFamily: 'Arial',
+        }).setShadow(2, 2, '#ff854c');
 
         scoreEmitter.on(SCORE_EVENTS.SCORE_READY, (goalScore) => {
             this.goalText.setText(`Goal: ${goalScore}`);

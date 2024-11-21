@@ -17,5 +17,4 @@ export const ANIMATIONS = {
   
 export const UI = {
     BUTTON: '/assets/ui/button.png',
-    RELOAD_BUTTON: 'assets/ui/reload-button.png',
 };

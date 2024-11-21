@@ -39,6 +39,7 @@ export default class Game extends Phaser.Scene {
     create() {
         this.#createAnimations();
         this.#addEventListeners();
+        this.cameras.main.setBackgroundColor('#84d79e');
 
         const queueSettings = {
             queueLength: 5,

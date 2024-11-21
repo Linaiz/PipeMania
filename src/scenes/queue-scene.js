@@ -99,9 +99,12 @@ export default class QueueScene extends Phaser.Scene {
     }
 
     #createText() {
-        const text = this.add.text(this.offsetX + 5, this.offsetY + this.cellSize - this.spacing, 'Next:', {
-            fontSize: '28px',
-        });
+        const text = this.add.text(this.offsetX, this.offsetY + this.cellSize - this.spacing, 'Next:', {
+            fontSize: '32px',
+            color: '#c8ff94',
+            fontFamily: 'Arial',
+        }).setShadow(2, 2, '#ff854c');
+
         text.setOrigin(0.5);
     }
 }
