@@ -12,7 +12,12 @@ export default class Ui extends Phaser.Scene {
     }
 
     create() {
-        this.timerText = this.add.text(10, 10, `Time: 15`, {
+        this.#createTimerText();
+        this.#createGoalText();
+    }
+
+    #createTimerText() {
+        this.timerText = this.add.text(210, 45, `Time: 15`, {
             fontSize: '24px',
             color: '#fff',
         });
@@ -28,7 +33,13 @@ export default class Ui extends Phaser.Scene {
         timerEmitter.on(TIMER_EVENTS.TIME_UP, () => {
             this.timerText.setText('The water starts to flow!');
         });
+    }
 
+    #createGoalText() {
+        this.goalText = this.add.text(610, 45, `Goal: 10`, {
+            fontSize: '24px',
+            color: '#fff',
+        });
     }
 
 }

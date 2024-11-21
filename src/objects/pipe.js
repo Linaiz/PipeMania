@@ -5,8 +5,10 @@ import { SPRITES } from '../constants/asset-paths';
 
 export default class Pipe extends GridElement {
     filled;
+    #filledSpitePath;
     #connectionPoints;
 
+    get filledSpritePath() { return this.#filledSpitePath; }
     get connectionPoints() { return this.#connectionPoints; }
 
     constructor(type) { 
@@ -50,6 +52,7 @@ export default class Pipe extends GridElement {
 
     #initStraightPipe() {
         this._spritePath = SPRITES.PIPE_STRAIGHT;
+        this.#filledSpitePath = SPRITES.PIPE_STRAIGHT_FILLED;
 
         // Straight pipe can be oriented in 2 ways. The orientation is random.
         const randomOrientation = Math.random(); 
@@ -67,6 +70,7 @@ export default class Pipe extends GridElement {
 
     #initCurvedPipe() {
         this._spritePath = SPRITES.PIPE_CURVED;
+        this.#filledSpitePath = SPRITES.PIPE_CURVED_FILLED;
 
         // Curved pipe can be oriented in 4 ways. The orientation is random.
         const randomOrientation = Math.random(); 
@@ -94,6 +98,8 @@ export default class Pipe extends GridElement {
 
     #initCrossPipe() {
         this._spritePath = SPRITES.PIPE_CROSS;
+        this.#filledSpitePath = SPRITES.PIPE_CROSS_FILLED;
+
         this._rotation = 0; 
         this.#connectionPoints = [
             ConnectionPoint.UP, 
@@ -105,6 +111,7 @@ export default class Pipe extends GridElement {
 
     #initStartPipe() {
         this._spritePath = SPRITES.PIPE_START;
+        this.#filledSpitePath = SPRITES.PIPE_START_FILLED;
 
         // Starting can be oriented in 4 ways. The orientation is random.
         const randomOrientation = Math.random(); 

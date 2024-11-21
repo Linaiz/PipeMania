@@ -133,6 +133,9 @@ export default class Grid {
         if (this.#fillNextCell(this.startRow, this.startCol)){
             this.pathLength++;
             //pipeEmitter.emit(PIPE_EVENTS.FILL_PIPE, this.startRow, this.startCol);
+        } 
+        else {
+            // End of path reached
         }
         console.log(this.grid);
 

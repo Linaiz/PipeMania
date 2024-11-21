@@ -5,6 +5,10 @@ export const SPRITES = {
     PIPE_START: '/assets/sprites/start.png',
     CELL_EMPTY: '/assets/sprites/empty.png',
     CELL_BLOCKED: '/assets/sprites/blocked.png',
+    PIPE_STRAIGHT_FILLED: '/assets/sprites/straight_filled.png',
+    PIPE_CURVED_FILLED: '/assets/sprites/curved_filled.png',
+    PIPE_CROSS_FILLED: '/assets/sprites/cross_filled.png',
+    PIPE_START_FILLED: '/assets/sprites/start_filled.png'
 };
 
 export const ANIMATIONS = {
