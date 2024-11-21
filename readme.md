@@ -32,10 +32,12 @@ npm install
 ```
 
 ### Run & Build
-Use this command to run the project in development mode. Open your browser and navigate to http://localhost:5173 (default Vite dev server address).
+Use this command to run the project in development mode. 
 ```
 npm run start
 ```
+Open your browser and navigate to http://localhost:5173 (default Vite dev server address).
+
 You can create a build, which will be saved in a `/dist` folder.
 ```
 npm run build
