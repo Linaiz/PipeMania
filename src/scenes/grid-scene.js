@@ -3,6 +3,7 @@ import Grid from '../objects/grid';
 import CellType from '../constants/cell-type';
 import PipeType from '../constants/pipe-type';
 import { ANIMATIONS, UI } from '../constants/asset-paths';
+import { TIMER_EVENTS, timerEmitter } from "../objects/events";
 
 export default class GridScene extends Phaser.Scene {
     // Attributes for the cell that the player is hovering over
@@ -32,6 +33,10 @@ export default class GridScene extends Phaser.Scene {
         
         this.input.on('pointermove', this.handlePointerMove, this);
         this.input.on('pointerdown', this.handlePointerDown, this);
+
+        timerEmitter.on(TIMER_EVENTS.TIME_UP, () => {
+            this.grid.progressWaterFlow();
+        });
     }
 
     #createGrid(grid) {

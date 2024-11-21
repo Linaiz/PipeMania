@@ -10,10 +10,10 @@ export default class Grid {
         this.rows = rows;
         this.columns = columns;
         this.numBlockedCells = numBlockedCells;
-        this.grid = this.createGrid();
+        this.grid = this.#createGrid();
     }
 
-    createGrid() {
+    #createGrid() {
         // Populate grid with empty cells
         const grid = [];
 
@@ -74,6 +74,8 @@ export default class Grid {
             if (col < this.columns - 1 && grid[row][col + 1].type == CellType.BLOCKED) continue;
 
             grid[row][col] = startPipe;
+            this.startRow = row;
+            this.startCol = col;
             break;
         }
 
@@ -109,6 +111,53 @@ export default class Grid {
                 cell.type == PipeType.STRAIGHT ||
                 cell.type == PipeType.CURVED ||
                 cell.type == PipeType.CROSS;
+    }
+
+    startWaterFlow() {
+
+    }
+
+    progressWaterFlow() {
+        const visited = Array.from({ length: this.rows }, () => Array(this.columns).fill(false));
+        const distances = Array.from({ length: this.rows }, () => Array(this.columns).fill(0));
+        const directions = [
+            [0, 1],   // Right
+            [0, -1],  // Left
+            [1, 0],   // Down
+            [-1, 0],  // Up
+        ];
+
+        let dist = 0;
+        this.#findLongestPath(this.startRow, this.startCol, visited, directions, distances, dist);
+    }
+
+    #findNextWaterFlowCell(startRow, startCol) {
+
+    }
+
+    #findLongestPath(row, col, visited, directions, distances) {
+        const cell = this.getCell(row, col) 
+
+        if ( 
+            !this.isValidCell(row, col) ||
+            visited[row][col] ||
+            cell.filled ||
+            cell.type === CellType.EMPTY || 
+            cell.type === CellType.BLOCKED
+        )
+            return 0;
+        
+        visited[row][col] = true;
+        for (const [dx, dy] of directions) {
+            const newRow = row + dx;
+            const newCol = col + dy;
+            
+            let nextDist =  1 + this.#findLongestPath(newRow, newCol, visited, directions, distances); 
+            if (nextDist > distances[row][col]) distances[row][col] = nextDist;
+        }
+        
+        console.log(distances);
+        return distances[row][col];
     }
 
 }

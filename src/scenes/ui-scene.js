@@ -1,8 +1,6 @@
 import Phaser from 'phaser';
 import { TIMER_EVENTS, timerEmitter } from "../objects/events";
-// UI will display the time that is left before water starts flowing, and the goal length of the pipe path
-// Timer will update UI every second - event or coupling?
-// Think if event emitter is needed here
+
 export default class Ui extends Phaser.Scene {
 
     constructor() {
@@ -10,7 +8,7 @@ export default class Ui extends Phaser.Scene {
     }
 
     preload() {
-        // Load UI assets
+
     }
 
     create() {

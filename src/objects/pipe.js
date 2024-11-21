@@ -4,18 +4,20 @@ import ConnectionPoint from '../constants/connection-point'
 import { SPRITES } from '../constants/asset-paths';
 
 export default class Pipe extends GridElement {
-    #_connectionPoints;
+    filled;
+    #connectionPoints;
 
-    get connectionPoints() { return this.#_connectionPoints; }
+    get connectionPoints() { return this.#connectionPoints; }
 
     constructor(type) { 
         super(type);
+        this.filled = false;
         this.#initPipe();
     }
 
     destroy() {
         super.destroy();
-        this.#_connectionPoints = null;
+        this.#connectionPoints = null;
     }
 
     #initPipe() {
@@ -36,7 +38,7 @@ export default class Pipe extends GridElement {
     }
 
     connectsTo(otherPipe) {
-        this.#_connectionPoints.forEach(point1 => {
+        this.#connectionPoints.forEach(point1 => {
             otherPipe.connectionPoints.forEach(point2 => {
                 if (ConnectionPoint.isConnecting(point1, point2)) return true;
             });
@@ -52,12 +54,12 @@ export default class Pipe extends GridElement {
         if (randomOrientation < 0.5) {
             // Vertical orientation
             this._rotation = 0; 
-            this.#_connectionPoints = [ConnectionPoint.UP, ConnectionPoint.DOWN];
+            this.#connectionPoints = [ConnectionPoint.UP, ConnectionPoint.DOWN];
         }
         else {
             // Horizontal orientation
             this._rotation = 90; 
-            this.#_connectionPoints = [ConnectionPoint.LEFT, ConnectionPoint.RIGHT];
+            this.#connectionPoints = [ConnectionPoint.LEFT, ConnectionPoint.RIGHT];
         }
     }
 
@@ -69,29 +71,29 @@ export default class Pipe extends GridElement {
         if (randomOrientation < 0.25){
             // down->right direction
             this._rotation = 0; 
-            this.#_connectionPoints = [ConnectionPoint.DOWN, ConnectionPoint.RIGHT];
+            this.#connectionPoints = [ConnectionPoint.DOWN, ConnectionPoint.RIGHT];
         }
         else if (randomOrientation < 0.5) {
             // down->left direction
             this._rotation = 90; 
-            this.#_connectionPoints = [ConnectionPoint.DOWN, ConnectionPoint.LEFT];
+            this.#connectionPoints = [ConnectionPoint.DOWN, ConnectionPoint.LEFT];
         }
         else if (randomOrientation < 0.75) {
             // up->left direction
             this._rotation = 180; 
-            this.#_connectionPoints = [ConnectionPoint.UP, ConnectionPoint.LEFT];
+            this.#connectionPoints = [ConnectionPoint.UP, ConnectionPoint.LEFT];
         }
         else {
             // up->right direction
             this._rotation = 270; 
-            this.#_connectionPoints = [ConnectionPoint.UP, ConnectionPoint.RIGHT];
+            this.#connectionPoints = [ConnectionPoint.UP, ConnectionPoint.RIGHT];
         }
     }
 
     #initCrossPipe() {
         this._spritePath = SPRITES.PIPE_CROSS;
         this._rotation = 0; 
-        this.#_connectionPoints = [
+        this.#connectionPoints = [
             ConnectionPoint.UP, 
             ConnectionPoint.DOWN, 
             ConnectionPoint.LEFT, 
@@ -106,19 +108,19 @@ export default class Pipe extends GridElement {
         const randomOrientation = Math.random(); 
         if (randomOrientation < 0.25){
             this._rotation = 0; 
-            this.#_connectionPoints = [ConnectionPoint.UP];
+            this.#connectionPoints = [ConnectionPoint.UP];
         }
         else if (randomOrientation < 0.5) {
             this._rotation = 90; 
-            this.#_connectionPoints = [ConnectionPoint.RIGHT];
+            this.#connectionPoints = [ConnectionPoint.RIGHT];
         }
         else if (randomOrientation < 0.75) {
             this._rotation = 180; 
-            this.#_connectionPoints = [ConnectionPoint.DOWN];
+            this.#connectionPoints = [ConnectionPoint.DOWN];
         }
         else {
             this._rotation = 270; 
-            this.#_connectionPoints = [ConnectionPoint.LEFT];
+            this.#connectionPoints = [ConnectionPoint.LEFT];
         }
     }
 
