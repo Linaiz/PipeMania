@@ -5,6 +5,8 @@ import { SPRITES, ANIMATIONS } from '../constants/asset-paths';
 import { TIMER_EVENTS, timerEmitter } from '../objects/events';
 
 export default class Game extends Phaser.Scene {
+    gameTime = 10;
+    goal = 10;
 
     constructor() {
         super({ key: 'Game'});
@@ -31,6 +33,7 @@ export default class Game extends Phaser.Scene {
     create() {
         this.#createAnimations();
         timerEmitter.on(TIMER_EVENTS.TIME_UP, this.startWaterFlow, this);
+        //waterEmitter.on(WATER_EVENTS.WATER_STOP, this.endGame, this);
 
         const queueSettings = {
             queueLength: 5,
@@ -57,7 +60,7 @@ export default class Game extends Phaser.Scene {
     }
 
     #startGame(){
-        const timer = new Timer(10);
+        const timer = new Timer(this.gameTime);
         timer.start();
     }
 
@@ -77,5 +80,9 @@ export default class Game extends Phaser.Scene {
     startWaterFlow() {
         const waterFlow = new WaterFlow(1000);
         waterFlow.start();
+    }
+
+    endGame() {
+
     }
 }

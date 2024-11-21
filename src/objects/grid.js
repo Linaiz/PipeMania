@@ -13,7 +13,6 @@ export default class Grid {
         this.rows = rows;
         this.columns = columns;
         this.numBlockedCells = numBlockedCells;
-        this.pathLength = 0;
         this.grid = this.#createGrid();
 
         pipeEmitter.on(PIPE_EVENTS.PLACE_PIPE, this.placePipe, this);
@@ -135,11 +134,10 @@ export default class Grid {
 
     progressWaterFlow() {
         if (this.#fillNextCell(this.startRow, this.startCol)){
-            this.pathLength++;
             pipeEmitter.emit(PIPE_EVENTS.FILL_PIPE, this.startRow, this.startCol);
         } 
         else {
-            // End of path reached
+            waterEmitter.emit(WATER_EVENTS.WATER_STOP);
         }
         console.log(this.grid);
 

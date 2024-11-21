@@ -8,6 +8,7 @@ export default class WaterFlow {
     constructor(cellFillDuration) {
         this.cellFillDuration = cellFillDuration;
         this.timerInterval = null;
+        waterEmitter.on(WATER_EVENTS.WATER_STOP, this.stop, this);
     }
 
     start() {

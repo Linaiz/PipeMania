@@ -15,5 +15,6 @@ export const pipeEmitter = new Phaser.Events.EventEmitter();
 export const WATER_EVENTS = {
     WATER_START: 'WATER_START',
     WATER_PROGRESS: 'WATER_PROGRESS',
+    WATER_STOP: 'WATER_STOP',
 }
 export const waterEmitter = new Phaser.Events.EventEmitter();
