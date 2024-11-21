@@ -12,6 +12,7 @@ export default class Grid {
         this.rows = rows;
         this.columns = columns;
         this.numBlockedCells = numBlockedCells;
+        this.pathLength = 0;
         this.grid = this.#createGrid();
 
         pipeEmitter.on(PIPE_EVENTS.PLACE_PIPE, this.placePipe, this);
@@ -111,11 +112,11 @@ export default class Grid {
         if (!this.isValidCell(row, col)) return false;
         const cell = this.grid[row][col];
 
-        return  !cell.filled &&
-                cell.type == CellType.EMPTY ||
+        return  !cell.filled && 
+                (cell.type == CellType.EMPTY ||
                 cell.type == PipeType.STRAIGHT ||
                 cell.type == PipeType.CURVED ||
-                cell.type == PipeType.CROSS;
+                cell.type == PipeType.CROSS);
     }
 
     placePipe(pipe, row, col){
@@ -129,8 +130,11 @@ export default class Grid {
     }
 
     progressWaterFlow() {
-        this.#fillNextCell(this.startRow, this.startCol);
-        //pipeEmitter.emit(PIPE_EVENTS.FILL_PIPE, this.startRow, this.startCol);
+        if (this.#fillNextCell(this.startRow, this.startCol)){
+            this.pathLength++;
+            //pipeEmitter.emit(PIPE_EVENTS.FILL_PIPE, this.startRow, this.startCol);
+        }
+        console.log(this.grid);
 
     }
 
@@ -160,11 +164,12 @@ export default class Grid {
             nextCol = col;
             maxDist = distances[row][col];
         }
-        if (maxDist == 0) return; // No more path to build
+        if (maxDist == 0) return false; // No more path to build
 
         this.getCell(nextRow, nextCol).filled = true;
         this.startRow = nextRow;
         this.startCol = nextCol;
+        return true;
     }
 
     #findLongestPath(row, col, visited, directions, distances, prev, dir) {

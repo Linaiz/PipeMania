@@ -78,9 +78,7 @@ export default class GridScene extends Phaser.Scene {
             this.#currentCol = col;
 
             if (this.#currentAnimation) this.#currentAnimation.destroy();
-            if (this.grid.getCell(row, col).type == CellType.BLOCKED || 
-                this.grid.getCell(row, col).type == PipeType.START) 
-                    return;
+            if (!this.grid.canPlacePipe(row, col)) return;
 
             this.#currentAnimation = this.#createSelectionAnimation(row, col);
         } 
@@ -98,7 +96,7 @@ export default class GridScene extends Phaser.Scene {
         const row = this.#calcGridRow(pointer.y);
         const col = this.#calcGridColumn(pointer.x);
         if (!this.grid.canPlacePipe(row, col)) return;
-        
+
 
         this.#placePipe(row, col);
     }
