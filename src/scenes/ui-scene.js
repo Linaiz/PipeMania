@@ -16,7 +16,7 @@ export default class Ui extends Phaser.Scene {
     }
 
     #createTimerText() {
-        this.timerText = this.add.text(210, 45, 'Time: 15', {
+        this.timerText = this.add.text(210, 45, 'Time: 30', {
             fontSize: '24px',
             color: '#fff',
         });

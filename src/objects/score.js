@@ -16,7 +16,8 @@ export default class Score {
 
     incrementScore() {
         this.currScore++;
-        scoreEmitter.emit(SCORE_EVENTS.UPDATE_SCORE, this.goalScore - this.currScore);
+        const remaining = this.goalScore - this.currScore;
+        if (remaining >= 0) scoreEmitter.emit(SCORE_EVENTS.UPDATE_SCORE, remaining);
 
         if (this.currScore == this.goalScore)
             scoreEmitter.emit(SCORE_EVENTS.SCORE_REACHED);

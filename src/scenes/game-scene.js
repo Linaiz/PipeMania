@@ -6,11 +6,11 @@ import { SPRITES, ANIMATIONS } from '../constants/asset-paths';
 import { TIMER_EVENTS, timerEmitter } from '../objects/events';
 
 export default class Game extends Phaser.Scene {
-    gameTime = 10;
-    goal = 15;
 
     constructor() {
         super({ key: 'Game'});
+        this.gameTime = 30;
+        this.goal = 15;
     }
 
     preload() {
@@ -33,8 +33,7 @@ export default class Game extends Phaser.Scene {
 
     create() {
         this.#createAnimations();
-        timerEmitter.on(TIMER_EVENTS.TIME_UP, this.startWaterFlow, this);
-
+        this.#addEventListeners();
 
         const queueSettings = {
             queueLength: 5,
@@ -77,6 +76,10 @@ export default class Game extends Phaser.Scene {
             frameRate: 9,
             repeat: -1
         });
+    }
+
+    #addEventListeners() {
+        timerEmitter.on(TIMER_EVENTS.TIME_UP, this.startWaterFlow, this);
     }
 
     startWaterFlow() {

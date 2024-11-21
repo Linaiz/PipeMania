@@ -3,6 +3,10 @@ import CellType from '../constants/cell-type';
 import { SPRITES } from '../constants/asset-paths';
 
 export default class Cell extends GridElement {
+    /**
+     * Creates a cell instance. Cell is distict from a pipe.
+     * @param {CellType} type Type of the cell to be created: Blocked or Empty.
+     */
     constructor(type) { 
         super(type);
         this.#initCell();

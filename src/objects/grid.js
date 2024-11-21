@@ -9,6 +9,13 @@ import { WATER_EVENTS, waterEmitter } from "./events";
 
 export default class Grid {
 
+    /**
+     * Grid contains the logic of the grid. 
+     * It maintains a matrix of GridElements, and uses DFS algorithm to find water flow.
+     * @param {number} rows Number of rows in the grid.
+     * @param {number} columns Number of columns in the grid.
+     * @param {number} numBlockedCells Number of blocked cells, where the player cannot place pipes.
+     */
     constructor(rows, columns, numBlockedCells = 4) {
         this.rows = rows;
         this.columns = columns;
