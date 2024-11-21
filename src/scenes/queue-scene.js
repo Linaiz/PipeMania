@@ -1,10 +1,13 @@
 import Phaser from 'phaser';
 import Queue from '../objects/queue';
+import { QUEUE_EVENTS, queueEmitter } from '../objects/events';
 import { ANIMATIONS } from '../constants/asset-paths';
 
-
+/**
+ *  Visual representation of the pipes queue.
+ */
 export default class QueueScene extends Phaser.Scene { 
-    
+
     constructor() {
         super({ key: 'Queue'});
     }
@@ -20,13 +23,14 @@ export default class QueueScene extends Phaser.Scene {
         this.#createQueue(this.queue);
         this.#createSelectionAnimation();
         this.#createText();
+
+        queueEmitter.on(QUEUE_EVENTS.QUEUE_POPPED, this.#redrawQueue, this);
     }
 
     #createQueue(queue) {
         let current = queue.getBack();    
-
-        // Draw current pipe
-        this.#addPipe(current.value, 0);
+   
+        this.#addPipe(current.value, 0);  // Draw current pipe
 
         // Draw rest of the pipes in the queue
         current = current.next;
@@ -36,12 +40,6 @@ export default class QueueScene extends Phaser.Scene {
             i += 1;
             current = current.next;
         }
-    }
-
-    getNextPipe() {
-        const pipe = this.queue.popPipe();
-        this.#redrawQueue();
-        return pipe;
     }
 
     #redrawQueue() {
@@ -67,6 +65,11 @@ export default class QueueScene extends Phaser.Scene {
         }
     }
 
+    /**
+     * Add pipe sprite at position i.
+     * @param {Pipe} pipe Pipe object to be drawn.
+     * @param {number} i Position in the queue.
+     */
     #addPipe(pipe, i) {
         let x = this.offsetX;
         let y = i * (this.cellSize + this.spacing) + this.cellSize / 2 + this.offsetY;
@@ -98,7 +101,6 @@ export default class QueueScene extends Phaser.Scene {
     #createText() {
         const text = this.add.text(this.offsetX + 5, this.offsetY + this.cellSize - this.spacing, 'Next:', {
             fontSize: '28px',
-            fontFamily: 'Monaco',
         });
         text.setOrigin(0.5);
     }

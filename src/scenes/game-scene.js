@@ -5,6 +5,11 @@ import WaterFlow from '../objects/water-flow';
 import { SPRITES, ANIMATIONS } from '../constants/asset-paths';
 import { TIMER_EVENTS, timerEmitter } from '../objects/events';
 
+/**
+ * Main scene where the game takes place.
+ * This scene launches the game subcomponents: Grid, Queue, and UI,
+ * Assets shared between sub-scenes are pre-load here.
+ */
 export default class Game extends Phaser.Scene {
 
     constructor() {
@@ -41,8 +46,7 @@ export default class Game extends Phaser.Scene {
             offsetY: 205,
             cellSize: 96,
             spacing: 10,
-        }
-        
+        }      
         const gridSettings = {
             rows: 7,
             columns: 9,
@@ -51,12 +55,10 @@ export default class Game extends Phaser.Scene {
             offsetY: 95,
         }
 
-        this.scene.launch("Queue", queueSettings);
-        
-        const queueScene = this.scene.get('Queue');
-        this.#startGame();
-        this.scene.launch("Grid", {queueScene, ...gridSettings});      
+        this.scene.launch("Queue", queueSettings);   
+        this.scene.launch("Grid", gridSettings);      
         this.scene.launch("Ui");
+        this.#startGame();
     }
 
     #startGame(){
@@ -85,9 +87,5 @@ export default class Game extends Phaser.Scene {
     startWaterFlow() {
         const waterFlow = new WaterFlow(1000);
         waterFlow.start();
-    }
-
-    endGame() {
-
     }
 }

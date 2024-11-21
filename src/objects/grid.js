@@ -4,11 +4,10 @@ import Cell from '../objects/cell'
 import CellType from '../constants/cell-type'
 import { getRandomInt } from '../utils/math-utils'
 import { PIPE_EVENTS, pipeEmitter } from './events';
-import { TIMER_EVENTS, timerEmitter } from './events'
+import { QUEUE_EVENTS, queueEmitter } from './events';
 import { WATER_EVENTS, waterEmitter } from "./events";
 
 export default class Grid {
-
     /**
      * Grid contains the logic of the grid. 
      * It maintains a matrix of GridElements, and uses DFS algorithm to find water flow.
@@ -22,9 +21,14 @@ export default class Grid {
         this.numBlockedCells = numBlockedCells;
         this.grid = this.#createGrid();
 
-        pipeEmitter.on(PIPE_EVENTS.PLACE_PIPE, this.placePipe, this);
-        waterEmitter.on(WATER_EVENTS.WATER_START, this.startWaterFlow, this);
-        waterEmitter.on(WATER_EVENTS.WATER_PROGRESS, this.progressWaterFlow, this);
+        // Row and Column where a pipe will be placed.
+        this.placeRow = 0;
+        this.placeCol = 0;
+
+        pipeEmitter.on(PIPE_EVENTS.PLACE_PIPE, this.#initPlacePipe, this);
+        queueEmitter.on(QUEUE_EVENTS.QUEUE_POPPED, this.#placePipe, this);
+        waterEmitter.on(WATER_EVENTS.WATER_START, this.#startWaterFlow, this);
+        waterEmitter.on(WATER_EVENTS.WATER_PROGRESS, this.#progressWaterFlow, this);
     }
 
     #createGrid() {
@@ -128,20 +132,29 @@ export default class Grid {
                 cell.type == PipeType.CROSS);
     }
 
-    placePipe(pipe, row, col){
-        if(!this.canPlacePipe) return;
+    #initPlacePipe(row, col) {
+        this.placeRow = row;
+        this.placeCol = col;
+        queueEmitter.emit(QUEUE_EVENTS.POP_QUEUE);
+    }
+
+    #placePipe(pipe) {
+        const row = this.placeRow;
+        const col = this.placeCol;
+        if(!this.canPlacePipe(row, col)) return;
         this.getCell(row, col).destroy();
         this.setCell(row, col, pipe);
+        pipeEmitter.emit(PIPE_EVENTS.PIPE_UPDATED, row, col);
     }
 
-    startWaterFlow() {
+    #startWaterFlow() {
         this.getCell(this.startRow, this.startCol).filled = true;
-        pipeEmitter.emit(PIPE_EVENTS.FILL_PIPE, this.startRow, this.startCol);
+        pipeEmitter.emit(PIPE_EVENTS.PIPE_UPDATED, this.startRow, this.startCol);
     }
 
-    progressWaterFlow() {
+    #progressWaterFlow() {
         if (this.#fillNextCell(this.startRow, this.startCol)){
-            pipeEmitter.emit(PIPE_EVENTS.FILL_PIPE, this.startRow, this.startCol);
+            pipeEmitter.emit(PIPE_EVENTS.PIPE_UPDATED, this.startRow, this.startCol);           
             waterEmitter.emit(WATER_EVENTS.FILL_CELL);
         } 
         else {
@@ -149,6 +162,12 @@ export default class Grid {
         }
     }
 
+    /**
+     * Find and fill next cell from which the longest pipe path can be reached.
+     * @param {number} startRow Row of the origin cell.
+     * @param {number} startCol Column of the origin cell.
+     * @returns False if the path cannot be extended further.
+     */
     #fillNextCell(startRow, startCol) {
         const visited = Array.from({ length: this.rows }, () => Array(this.columns).fill(false));
         const distances = Array.from({ length: this.rows }, () => Array(this.columns).fill(0));
@@ -184,6 +203,17 @@ export default class Grid {
         return true;
     }
 
+    /**
+     * 
+     * @param {number} row Row of the starting cell.
+     * @param {number} col Column of the starting cell.
+     * @param {boolean[][]} visited A store of visited cells.
+     * @param {{dx: number, dy: number, dir: string}[]} directions The directions in which it's possible to move from a cell.
+     * @param {number[][]} distances Map with longest paths found for each cell.
+     * @param {GridElement} prev Previously visited cell in the grid.
+     * @param {string} dir Position of the current cell relative to prev cell.
+     * @returns Map with longest paths found for each cell.
+     */
     #findLongestPath(row, col, visited, directions, distances, prev, dir) {
         const cell = this.getCell(row, col) 
         

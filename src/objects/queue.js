@@ -2,13 +2,20 @@ import Pipe from '../objects/pipe';
 import PipeType from '../constants/pipe-type';
 import Deque from '../utils/deque';
 import { getRandomInt } from '../utils/math-utils';
+import { QUEUE_EVENTS, queueEmitter } from './events';
 
 export default class Queue {
-
+    /**
+     * Queue keeps a queue of pipes, usind the Deque data structure.
+     * It is filled with random pipes, and its length is always the same.
+     * Any time a pipe is popped, a new random pipe is added.
+     * @param {number} queueLength Number of pipes to be kept in the queue.
+     */
     constructor(queueLength) {
         this.queueLength = queueLength;
         this.queue = new Deque();
         this.#initQueue();
+        queueEmitter.on(QUEUE_EVENTS.POP_QUEUE, this.popPipe, this);
     }
 
     #initQueue() {
@@ -19,10 +26,9 @@ export default class Queue {
     }
 
     popPipe() {
-        // Return next pipe in the queue
-        const pipe = this.queue.removeBack();
-        // append new random pipe on the beginning of the queue
-        this.queue.addFront(this.#getRandomPipe());
+        const pipe = this.queue.removeBack();  // Next pipe in the queue
+        this.queue.addFront(this.#getRandomPipe());  // Append new random pipe
+        queueEmitter.emit(QUEUE_EVENTS.QUEUE_POPPED, pipe);
         return pipe;
     }
 

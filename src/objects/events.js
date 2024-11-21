@@ -12,6 +12,12 @@ export const PIPE_EVENTS = {
 };
 export const pipeEmitter = new Phaser.Events.EventEmitter();
 
+export const QUEUE_EVENTS = {
+    POP_QUEUE: 'POP_QUEUE',
+    QUEUE_POPPED: 'QUEUE_POPPED',
+};
+export const queueEmitter = new Phaser.Events.EventEmitter();
+
 export const WATER_EVENTS = {
     WATER_START: 'WATER_START',
     WATER_PROGRESS: 'WATER_PROGRESS',

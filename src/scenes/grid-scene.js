@@ -1,17 +1,20 @@
 import Phaser from 'phaser';
 import Grid from '../objects/grid';
-import CellType from '../constants/cell-type';
-import PipeType from '../constants/pipe-type';
 import { ANIMATIONS, UI } from '../constants/asset-paths';
-import { TIMER_EVENTS, timerEmitter } from "../objects/events";
 import { PIPE_EVENTS, pipeEmitter } from '../objects/events';
 
+/**
+ * Visual reperesentaton of the grid.
+ */
 export default class GridScene extends Phaser.Scene {
     // Attributes for the cell that the player is hovering over
     #currentRow = 0;
     #currentCol = 0;
     #currentAnimation;
 
+    /**
+     * Visual reperesentaton of the grid.
+     */
     constructor() {
         super({ key: 'Grid'});
     }
@@ -26,7 +29,6 @@ export default class GridScene extends Phaser.Scene {
         this.cellSize = data.cellSize;
         this.offsetX = data.offsetX;
         this.offsetY = data.offsetY;
-        this.queueScene = data.queueScene;
 
         this.grid = new Grid(this.rows, this.columns);
         this.#createGrid(this.grid);  
@@ -35,8 +37,7 @@ export default class GridScene extends Phaser.Scene {
         this.input.on('pointermove', this.handlePointerMove, this);
         this.input.on('pointerdown', this.handlePointerDown, this);
 
-        //timerEmitter.on(TIMER_EVENTS.TIME_UP, this.grid.progressWaterFlow());
-        pipeEmitter.on(PIPE_EVENTS.FILL_PIPE, this.updatePipe, this);
+        pipeEmitter.on(PIPE_EVENTS.PIPE_UPDATED, this.updatePipe, this);   
     }
 
     #createGrid(grid) {
@@ -96,8 +97,7 @@ export default class GridScene extends Phaser.Scene {
         const col = this.#calcGridColumn(pointer.x);
         if (!this.grid.canPlacePipe(row, col)) return;
 
-
-        this.#placePipe(row, col);
+        pipeEmitter.emit(PIPE_EVENTS.PLACE_PIPE, row, col);
     }
 
     updatePipe(row, col) {

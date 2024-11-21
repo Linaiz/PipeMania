@@ -2,7 +2,6 @@ import GridElement from './grid-element';
 import PipeType from '../constants/pipe-type'
 import ConnectionPoint from '../constants/connection-point'
 import { SPRITES } from '../constants/asset-paths';
-import { PIPE_EVENTS, pipeEmitter } from './events';
 
 export default class Pipe extends GridElement {
     filled;
