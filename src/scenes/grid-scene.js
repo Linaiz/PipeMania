@@ -35,9 +35,8 @@ export default class GridScene extends Phaser.Scene {
         this.input.on('pointermove', this.handlePointerMove, this);
         this.input.on('pointerdown', this.handlePointerDown, this);
 
-        timerEmitter.on(TIMER_EVENTS.TIME_UP, () => {
-            this.grid.progressWaterFlow();
-        });
+        //timerEmitter.on(TIMER_EVENTS.TIME_UP, this.grid.progressWaterFlow());
+        pipeEmitter.on(PIPE_EVENTS.FILL_PIPE, this.updatePipe, this);
     }
 
     #createGrid(grid) {
@@ -99,6 +98,12 @@ export default class GridScene extends Phaser.Scene {
 
 
         this.#placePipe(row, col);
+    }
+
+    updatePipe(row, col) {
+        const x =  this.#calcGridPositionX(col);
+        const y = this.#calcGridPositionY(row);  
+        this.#addCellSprite(x, y, row, col);
     }
 
     #placePipe(row, col) {

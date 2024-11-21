@@ -5,6 +5,7 @@ import CellType from '../constants/cell-type'
 import { getRandomInt } from '../utils/math-utils'
 import { PIPE_EVENTS, pipeEmitter } from './events';
 import { TIMER_EVENTS, timerEmitter } from './events'
+import { WATER_EVENTS, waterEmitter } from "./events";
 
 export default class Grid {
 
@@ -16,6 +17,8 @@ export default class Grid {
         this.grid = this.#createGrid();
 
         pipeEmitter.on(PIPE_EVENTS.PLACE_PIPE, this.placePipe, this);
+        waterEmitter.on(WATER_EVENTS.WATER_START, this.startWaterFlow, this);
+        waterEmitter.on(WATER_EVENTS.WATER_PROGRESS, this.progressWaterFlow, this);
     }
 
     #createGrid() {
@@ -126,13 +129,14 @@ export default class Grid {
     }
 
     startWaterFlow() {
-
+        this.getCell(this.startRow, this.startCol).filled = true;
+        pipeEmitter.emit(PIPE_EVENTS.FILL_PIPE, this.startRow, this.startCol);
     }
 
     progressWaterFlow() {
         if (this.#fillNextCell(this.startRow, this.startCol)){
             this.pathLength++;
-            //pipeEmitter.emit(PIPE_EVENTS.FILL_PIPE, this.startRow, this.startCol);
+            pipeEmitter.emit(PIPE_EVENTS.FILL_PIPE, this.startRow, this.startCol);
         } 
         else {
             // End of path reached

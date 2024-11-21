@@ -4,6 +4,10 @@ export default class GridElement {
     _type;
     _rotation;
 
+    set sprite(value) {
+        if (this.sprite) this.sprite.destroy()
+        this.sprite = value;
+    }
     get spritePath() { return this._spritePath; }
     get type() { return this._type; }
     get rotation() { return this._rotation; }

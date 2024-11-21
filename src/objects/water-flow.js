@@ -2,7 +2,7 @@ import { WATER_EVENTS, waterEmitter } from "./events";
 
 export default class WaterFlow {
     /**
-     * Creates a WaterFlow instance.
+     * Creates a WaterFlow instance, that will progress the water flow through events.
      * @param {number} cellFillDuration - Time it takes to fill one cell, in seconds.
     */
     constructor(cellFillDuration) {
