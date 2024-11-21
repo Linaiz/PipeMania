@@ -179,8 +179,6 @@ export default class Grid {
         ];
 
         this.#findLongestPath(startRow, startCol, visited, directions, distances, null, null);
-        console.log(distances);
-        console.log(this.grid);
 
         let nextRow = -1;
         let nextCol = -1;
