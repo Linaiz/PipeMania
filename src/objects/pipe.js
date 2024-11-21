@@ -37,12 +37,14 @@ export default class Pipe extends GridElement {
         }
     }
 
-    connectsTo(otherPipe) {
-        this.#connectionPoints.forEach(point1 => {
-            otherPipe.connectionPoints.forEach(point2 => {
-                if (ConnectionPoint.isConnecting(point1, point2)) return true;
-            });
-        });
+    connectsTo(otherPipe, direction) {
+         for (const point1 of this.#connectionPoints) {
+            for (const point2 of otherPipe.connectionPoints) {
+                if (ConnectionPoint.isConnecting(point1, point2, direction)) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 

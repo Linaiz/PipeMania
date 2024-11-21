@@ -4,6 +4,7 @@ import CellType from '../constants/cell-type';
 import PipeType from '../constants/pipe-type';
 import { ANIMATIONS, UI } from '../constants/asset-paths';
 import { TIMER_EVENTS, timerEmitter } from "../objects/events";
+import { PIPE_EVENTS, pipeEmitter } from '../objects/events';
 
 export default class GridScene extends Phaser.Scene {
     // Attributes for the cell that the player is hovering over
@@ -97,6 +98,7 @@ export default class GridScene extends Phaser.Scene {
         const row = this.#calcGridRow(pointer.y);
         const col = this.#calcGridColumn(pointer.x);
         if (!this.grid.canPlacePipe(row, col)) return;
+        
 
         this.#placePipe(row, col);
     }

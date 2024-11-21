@@ -49,7 +49,7 @@ export default class Game extends Phaser.Scene {
         
         this.scene.launch("Ui");
 
-        const timer = new Timer(15);
+        const timer = new Timer(10);
         timer.start();
     }
 

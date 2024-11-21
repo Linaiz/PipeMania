@@ -3,7 +3,6 @@ export default class GridElement {
     _spritePath;
     _type;
     _rotation;
-    _filled;
 
     get spritePath() { return this._spritePath; }
     get type() { return this._type; }

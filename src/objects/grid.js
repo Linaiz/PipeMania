@@ -3,6 +3,8 @@ import PipeType from '../constants/pipe-type'
 import Cell from '../objects/cell'
 import CellType from '../constants/cell-type'
 import { getRandomInt } from '../utils/math-utils'
+import { PIPE_EVENTS, pipeEmitter } from './events';
+import { TIMER_EVENTS, timerEmitter } from './events'
 
 export default class Grid {
 
@@ -11,6 +13,8 @@ export default class Grid {
         this.columns = columns;
         this.numBlockedCells = numBlockedCells;
         this.grid = this.#createGrid();
+
+        pipeEmitter.on(PIPE_EVENTS.PLACE_PIPE, this.placePipe, this);
     }
 
     #createGrid() {
@@ -107,10 +111,17 @@ export default class Grid {
         if (!this.isValidCell(row, col)) return false;
         const cell = this.grid[row][col];
 
-        return  cell.type == CellType.EMPTY ||
+        return  !cell.filled &&
+                cell.type == CellType.EMPTY ||
                 cell.type == PipeType.STRAIGHT ||
                 cell.type == PipeType.CURVED ||
                 cell.type == PipeType.CROSS;
+    }
+
+    placePipe(pipe, row, col){
+        if(!this.canPlacePipe) return;
+        this.getCell(row, col).destroy();
+        this.setCell(row, col, pipe);
     }
 
     startWaterFlow() {
@@ -118,45 +129,66 @@ export default class Grid {
     }
 
     progressWaterFlow() {
+        this.#fillNextCell(this.startRow, this.startCol);
+        //pipeEmitter.emit(PIPE_EVENTS.FILL_PIPE, this.startRow, this.startCol);
+
+    }
+
+    #fillNextCell(startRow, startCol) {
         const visited = Array.from({ length: this.rows }, () => Array(this.columns).fill(false));
         const distances = Array.from({ length: this.rows }, () => Array(this.columns).fill(0));
         const directions = [
-            [0, 1],   // Right
-            [0, -1],  // Left
-            [1, 0],   // Down
-            [-1, 0],  // Up
+            { dx: 0, dy: 1, dir: 'right' },  // Right
+            { dx: 0, dy: -1, dir: 'left' },  // Left
+            { dx: 1, dy: 0, dir: 'down' },   // Down
+            { dx: -1, dy: 0, dir: 'up' },    // Up
         ];
 
-        let dist = 0;
-        this.#findLongestPath(this.startRow, this.startCol, visited, directions, distances, dist);
+        this.#findLongestPath(startRow, startCol, visited, directions, distances, null, null);
+        console.log(distances);
+
+        let nextRow = -1;
+        let nextCol = -1;
+        let maxDist = 0;
+        for (const { dx, dy, dir } of directions) {
+            const row = startRow + dx;
+            const col = startCol + dy;
+            if (!this.isValidCell(row, col)) continue;
+            if (distances[row][col] < maxDist) continue;
+            
+            nextRow = row;
+            nextCol = col;
+            maxDist = distances[row][col];
+        }
+        if (maxDist == 0) return; // No more path to build
+
+        this.getCell(nextRow, nextCol).filled = true;
+        this.startRow = nextRow;
+        this.startCol = nextCol;
     }
 
-    #findNextWaterFlowCell(startRow, startCol) {
-
-    }
-
-    #findLongestPath(row, col, visited, directions, distances) {
+    #findLongestPath(row, col, visited, directions, distances, prev, dir) {
         const cell = this.getCell(row, col) 
 
-        if ( 
-            !this.isValidCell(row, col) ||
-            visited[row][col] ||
-            cell.filled ||
-            cell.type === CellType.EMPTY || 
-            cell.type === CellType.BLOCKED
-        )
-            return 0;
+        if (!(row == this.startRow && col == this.startCol)) {
+            if (!this.isValidCell(row, col) ||
+                cell.type === CellType.EMPTY || 
+                cell.type === CellType.BLOCKED ||
+                !prev.connectsTo(cell, dir) ||
+                visited[row][col] ||
+                cell.filled
+            ) return 0;                    
+        }
         
         visited[row][col] = true;
-        for (const [dx, dy] of directions) {
+        for (const { dx, dy, dir } of directions) {
             const newRow = row + dx;
             const newCol = col + dy;
-            
-            let nextDist =  1 + this.#findLongestPath(newRow, newCol, visited, directions, distances); 
+
+            let nextDist =  1 + this.#findLongestPath(newRow, newCol, visited, directions, distances, cell, dir); 
             if (nextDist > distances[row][col]) distances[row][col] = nextDist;
         }
         
-        console.log(distances);
         return distances[row][col];
     }
 
