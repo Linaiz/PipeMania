@@ -140,8 +140,6 @@ export default class Grid {
         else {
             waterEmitter.emit(WATER_EVENTS.WATER_STOP);
         }
-        console.log(this.grid);
-
     }
 
     #fillNextCell(startRow, startCol) {
@@ -156,6 +154,7 @@ export default class Grid {
 
         this.#findLongestPath(startRow, startCol, visited, directions, distances, null, null);
         console.log(distances);
+        console.log(this.grid);
 
         let nextRow = -1;
         let nextCol = -1;
@@ -180,16 +179,16 @@ export default class Grid {
 
     #findLongestPath(row, col, visited, directions, distances, prev, dir) {
         const cell = this.getCell(row, col) 
-
-        if (!(row == this.startRow && col == this.startCol)) {
-            if (!this.isValidCell(row, col) ||
+        
+        if (prev){
+            if( !this.isValidCell(row, col) ||
+                visited[row][col] ||
                 cell.type === CellType.EMPTY || 
                 cell.type === CellType.BLOCKED ||
                 !prev.connectsTo(cell, dir) ||
-                visited[row][col] ||
                 cell.filled
-            ) return 0;                    
-        }
+            ) return 0;
+        }                   
         
         visited[row][col] = true;
         for (const { dx, dy, dir } of directions) {
@@ -198,8 +197,7 @@ export default class Grid {
 
             let nextDist =  1 + this.#findLongestPath(newRow, newCol, visited, directions, distances, cell, dir); 
             if (nextDist > distances[row][col]) distances[row][col] = nextDist;
-        }
-        
+        }     
         return distances[row][col];
     }
 
